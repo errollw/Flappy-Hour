@@ -9,23 +9,25 @@ var beer_mug,
 var bg_sky, bg_ground;
 
 var bg_ground_scroller,
-	bg_trees_scroller,
-	bg_clouds_scroller;
+    bg_trees_scroller,
+    bg_clouds_scroller;
 
 var bg_instances = [];
 
 var keg_sets = [],
-	keg_set_timer_max = 84;
-	keg_set_timer = keg_set_timer_max;
+    keg_set_timer_max = 84;
+    keg_set_timer = keg_set_timer_max;
 
 var keg_w = 96,
-	keg_h = 118,
-	keg_offset = 10;
+    keg_h = 118,
+    keg_offset = 10;
 
 var beer_keg_syms = {};
 
 var gap_y, gap_y_min, gap_y_max;
-var gap_height = 300;
+var gap_height = 240;
+
+var score = 0;
 
 // Only executed our code once the DOM is ready.
 window.onload = function() {
@@ -45,10 +47,10 @@ window.onload = function() {
     gap_y = Math.ceil(ground_y/2);
 
     // initialize beer keg symbols
-	beer_keg = new Raster("beer_keg_a.png"); beer_keg_syms[1] = new Symbol(beer_keg);
-	beer_keg = new Raster("beer_keg_b.png"); beer_keg_syms[2] = new Symbol(beer_keg);
-	beer_keg = new Raster("beer_keg_c.png"); beer_keg_syms[3] = new Symbol(beer_keg);
-	beer_keg = new Raster("beer_keg_d.png"); beer_keg_syms[4] = new Symbol(beer_keg);
+    beer_keg_syms[1] = new Symbol(new Raster("beer_keg_a.png"));
+    beer_keg_syms[2] = new Symbol(new Raster("beer_keg_b.png"));
+    beer_keg_syms[3] = new Symbol(new Raster("beer_keg_c.png"));
+    beer_keg_syms[4] = new Symbol(new Raster("beer_keg_d.png"));
 
     load_background();
 
@@ -56,6 +58,8 @@ window.onload = function() {
     beer_mug.scale(0.5);
     beer_mug.position.y = ground_y/2 - beer_mug.bounds.height;
     beer_mug.position.x = vw/3 - beer_mug.bounds.width/2;
+
+    make_keg_set();
 
     var tool = new Tool();
     tool.onMouseUp = function(event) {
@@ -65,11 +69,15 @@ window.onload = function() {
 
     view.onFrame = function(event) {
 
-    	keg_set_timer--;
-    	if (keg_set_timer == 0){
-    		make_keg_set();
-    		keg_set_timer = keg_set_timer_max;
-    	}
+        $("#score").text(score);
+
+        console.log(score)
+
+        keg_set_timer--;
+        if (keg_set_timer == 0){
+            make_keg_set();
+            keg_set_timer = keg_set_timer_max;
+        }
 
         bm_dy += 0.7;
         beer_mug.position.y += bm_dy;
@@ -78,40 +86,41 @@ window.onload = function() {
         beer_mug.rotation = bm_dy
 
         for(i=0; i<bg_instances.length; i++){
-        	bg_instances[i].position.x += bg_instances[i].dx;
-        	if(bg_instances[i].bounds.left < bg_instances[i].thresh_x){
-        		bg_instances[i].position.x += bg_instances[i].reset_dx;
-        	}
+            bg_instances[i].position.x += bg_instances[i].dx;
+            if(bg_instances[i].bounds.left < bg_instances[i].thresh_x){
+                bg_instances[i].position.x += bg_instances[i].reset_dx;
+            }
         }
 
         for(i=keg_sets.length-1; i>=0; i--){
-        	keg_sets[i].position.x += keg_sets[i].dx;
+            keg_sets[i].position.x += keg_sets[i].dx;
 
-        	if(keg_sets[i].position.x < -keg_w/2){
-        		keg_sets[i].remove();
-        		keg_sets.shift();
-        	}
+            if (keg_sets[i].position.x <= vw/3 && (keg_sets[i].position.x-keg_sets[i].dx) > vw/3)
+                score++;
+
+            if(keg_sets[i].position.x < -keg_w/2){
+                keg_sets[i].remove();
+                keg_sets.shift();
+            }
         }
     }
-
-    make_keg_set();
-
+    
 }
 
 function make_keg_set(){
 
-	var keg_set = new Group();
+    var keg_set = new Group();
 
     // make top set of kegs
     for(keg_bottom_y=gap_y-gap_height/2; keg_bottom_y>0; keg_bottom_y-=keg_h-keg_offset){
-    	keg_set.addChild(place_keg(keg_bottom_y-keg_h/2));
+        keg_set.addChild(place_keg(keg_bottom_y-keg_h/2));
     }
 
     // make bottom set of kegs
     var lowest_keg_bottom = gap_y+keg_h+gap_height/2;
     while (lowest_keg_bottom < vh) lowest_keg_bottom += keg_h;
     for(keg_bottom_y=lowest_keg_bottom; keg_bottom_y>gap_y+keg_h+gap_height/2; keg_bottom_y-=keg_h-keg_offset){
-    	keg_set.addChild(place_keg(keg_bottom_y-keg_h/2));
+        keg_set.addChild(place_keg(keg_bottom_y-keg_h/2));
     }
 
     keg_set.dx = -4;
@@ -125,16 +134,16 @@ function make_keg_set(){
 
 // places a beer keg at height y to the right of the screen
 function place_keg(y){
-	var rand_x_disp = (Math.ceil(Math.random()*4)-2)*2;
-	var rand_keg_sym = beer_keg_syms[Math.ceil(Math.random()*4)]
-	return rand_keg_sym.place([vw+keg_w/2+rand_x_disp, y]);
+    var rand_x_disp = (Math.ceil(Math.random()*4)-2)*2;
+    var rand_keg_sym = beer_keg_syms[Math.ceil(Math.random()*4)]
+    return rand_keg_sym.place([vw+keg_w/2+rand_x_disp, y]);
 }
 
 
 function load_background(){
 
     
-    bg_sky = new Shape.Rectangle({ // blue sky rectangle 			
+    bg_sky = new Shape.Rectangle({ // blue sky rectangle            
         from: [0, 0], to: [vw, vh],
         fillColor: '#70C6CF' });
     
