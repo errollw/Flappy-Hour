@@ -76,7 +76,7 @@ window.onload = function() {
                 reset();
             }
         } else {
-            bm_dy = -12;
+            bm_dy = -16;
             beer_mug.rotation = -25;
         }
     }
@@ -188,7 +188,7 @@ function make_keg_set(){
         keg_set.addChild(place_keg(keg_bottom_y-keg_h/2));
     }
 
-    keg_set.dx = -4;
+    keg_set.dx = -6;
     keg_sets.push(keg_set);
     keg_set.insertBelow(bg_ground);
 
@@ -236,7 +236,7 @@ function load_background(){
         bg_ground_scroller.addChild(ground_scroller_sym.place([sym_x,ground_y]));
     }
     bg_instances.push(bg_ground_scroller);
-    bg_ground_scroller.dx = -4;
+    bg_ground_scroller.dx = -6;
     bg_ground_scroller.thresh_x = -208;
     bg_ground_scroller.reset_dx = 208;
 
