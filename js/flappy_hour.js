@@ -3,6 +3,9 @@ paper.install(window);
 
 var vw, vh, ground_y;
 
+var view_clip,
+    view_clipper;
+
 var beer_mug,
     bm_dy = 0;
 
@@ -44,6 +47,10 @@ window.onload = function() {
 
     // get page size
     vw = view.size.width, vh = view.size.height;
+    view_clipper = new Shape.Rectangle(new Rectangle(0,0,vw,vh));
+    view_clipper.strokeColor = 'black';
+    view_clip = new Group([view_clipper]);
+    view_clip.clipped = true;
 
     // set ground height, and boounds for keg_gaps
     ground_y = vh*7/8;
@@ -65,6 +72,8 @@ window.onload = function() {
     beer_mug.scale(0.5);
     beer_mug.position.y = ground_y/2 - beer_mug.bounds.height;
     beer_mug.position.x = vw/3 - beer_mug.bounds.width/2;
+
+    view_clip.addChild(beer_mug);
 
     make_keg_set();
 
@@ -230,6 +239,8 @@ function load_background(){
     bg_ground = new Shape.Rectangle({ // brown ground rectangle
         from: [0, ground_y], to: [vw, vh],
         fillColor: '#DDD994' });
+
+    view_clip.addChildren([bg_sky, bg_clouds, bg_trees, bg_ground]);
 
     // groups for scrolling background items
     bg_ground_scroller = new Group();
