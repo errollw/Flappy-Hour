@@ -49,14 +49,14 @@ window.onload = function() {
     gap_y = Math.ceil(ground_y/2);
 
     // initialize beer keg symbols
-    beer_keg_syms[1] = new Symbol(new Raster("beer_keg_a.png"));
-    beer_keg_syms[2] = new Symbol(new Raster("beer_keg_b.png"));
-    beer_keg_syms[3] = new Symbol(new Raster("beer_keg_c.png"));
-    beer_keg_syms[4] = new Symbol(new Raster("beer_keg_d.png"));
+    beer_keg_syms[1] = new Symbol(new Raster("img/beer_keg_a.png"));
+    beer_keg_syms[2] = new Symbol(new Raster("img/beer_keg_b.png"));
+    beer_keg_syms[3] = new Symbol(new Raster("img/beer_keg_c.png"));
+    beer_keg_syms[4] = new Symbol(new Raster("img/beer_keg_d.png"));
 
     load_background();
 
-    beer_mug = new Raster("beer_mug.svg");
+    beer_mug = new Raster("img/beer_mug.svg");
     beer_mug.scale(0.5);
     beer_mug.position.y = ground_y/2 - beer_mug.bounds.height;
     beer_mug.position.x = vw/3 - beer_mug.bounds.width/2;
@@ -212,7 +212,7 @@ function load_background(){
     bg_trees_scroller = new Group();
     bg_clouds_scroller = new Group();
 
-    var ground_scroller = new Raster("bg_ground_parallax_scroller.svg");
+    var ground_scroller = new Raster("img/bg_ground_parallax_scroller.svg");
     var sym_w = 208;
     var ground_scroller_sym = new Symbol(ground_scroller);
     for(sym_x=sym_w/2; sym_x<vw+sym_w*3/2; sym_x+=sym_w){
@@ -223,7 +223,7 @@ function load_background(){
     bg_ground_scroller.thresh_x = -208;
     bg_ground_scroller.reset_dx = 208;
 
-    var clouds_scroller = new Raster("bg_clouds_parallax_scroller.png");
+    var clouds_scroller = new Raster("img/bg_clouds_parallax_scroller.png");
     var sym_w = 544, sym_h = 64;
     var clouds_scroller_sym = new Symbol(clouds_scroller);
     for(sym_x=sym_w/2; sym_x<vw+sym_w*3/2; sym_x+=sym_w){
@@ -234,7 +234,7 @@ function load_background(){
     bg_clouds_scroller.thresh_x = -sym_w;
     bg_clouds_scroller.reset_dx = sym_w;
 
-    var trees_scroller = new Raster("bg_trees_parallax_scroller.png");
+    var trees_scroller = new Raster("img/bg_trees_parallax_scroller.png");
     var sym_w = 352, sym_h = 102;
     var trees_scroller_sym = new Symbol(trees_scroller);
     for(sym_x=sym_w/2; sym_x<vw+sym_w*3/2; sym_x+=sym_w){
