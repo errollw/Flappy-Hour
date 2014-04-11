@@ -28,6 +28,11 @@ var gap_y, gap_y_min, gap_y_max;
 var gap_height = 240;
 
 var score = 0;
+var max_score = -1;
+if (window.localStorage && window.localStorage.max_score) {
+    console.log("Loading best score (" + window.localStorage.max_score + ") from local storage");
+    max_score = window.localStorage.max_score;
+}
 
 var alive = true;
 
@@ -107,7 +112,14 @@ window.onload = function() {
 
             beer_mug.rotate(-4);
 
-            $("#debrief").html("Game Over! Score: " + score + " Press any key to reset");
+            $("#debrief").html("Game Over!<br>Score: " + score);
+            if (score > max_score) {
+                $("#debrief").html($("#debrief").html() + " (New best!)");
+            }
+            else {
+                $("#debrief").html($("#debrief").html() + " (Best score: " + max_score + ")");
+            }
+            $("#debrief").html($("#debrief").html() + "<br>Press any key to reset");
         }
 
         bm_dy += 0.7;
@@ -147,6 +159,8 @@ window.onload = function() {
 function reset(){
     alive = true;
     score = 0;
+    max_score = Math.max(max_score, score)
+    window.localStorage.max_score = max_score;
     bm_dy = -12;
     beer_mug.position.y = ground_y/2 - beer_mug.bounds.height;
     beer_mug.position.x = vw/3 - beer_mug.bounds.width/2;
