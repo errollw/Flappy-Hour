@@ -269,8 +269,9 @@ function load_background(){
     bg_trees_scroller.thresh_x = -sym_w;
     bg_trees_scroller.reset_dx = sym_w;
 
-    bg_trees_scroller.insertBelow(bg_ground)
-    bg_clouds_scroller.insertBelow(bg_ground)
+    bg_ground_scroller.insertAbove(bg_ground)
+    bg_trees_scroller.insertAbove(bg_trees)
+    bg_clouds_scroller.insertAbove(bg_clouds)
 
 }
 
