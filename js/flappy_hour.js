@@ -159,10 +159,11 @@ window.onload = function() {
 }
 
 function reset(){
+    max_score = Math.max(max_score, score);
+    window.localStorage.max_score = max_score;
+
     alive = true;
     score = 0;
-    max_score = Math.max(max_score, score)
-    window.localStorage.max_score = max_score;
     bm_dy = -12;
     beer_mug.position.y = ground_y/2 - beer_mug.bounds.height;
     beer_mug.position.x = vw/3 - beer_mug.bounds.width/2;
