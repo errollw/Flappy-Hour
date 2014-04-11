@@ -85,6 +85,7 @@ window.onload = function() {
                 reset();
             }
         } else {
+            new Audio('sound/flap.mp3').play()
             bm_dy = -16;
             beer_mug.rotation = -25;
         }
@@ -113,10 +114,12 @@ window.onload = function() {
             }
 
             if (beer_mug.position.y + 40 > ground_y){
+                new Audio('sound/crash.mp3').play();
                 bm_dy = -15;
                 alive = false;
             }
             if (beer_mug.position.y - 30 < 0){
+                new Audio('sound/crash.mp3').play();
                 bm_dy = 0;
                 alive = false;
             }
@@ -156,11 +159,14 @@ window.onload = function() {
             keg_sets[i].position.x += keg_sets[i].dx;
 
             // increment score as kegs pass beer
-            if (alive && keg_sets[i].position.x <= vw/3 && (keg_sets[i].position.x-keg_sets[i].dx) > vw/3)
+            if (alive && keg_sets[i].position.x <= vw/3 && (keg_sets[i].position.x-keg_sets[i].dx) > vw/3){
+                new Audio('sound/score.mp3').play();
                 score++;
+            }
 
             // 
             if (alive && keg_sets[i].hitTest(beer_mug.position, {tolerance: 60})){
+                new Audio('sound/crash.mp3').play();
                 bm_dy = -15;
                 alive = false;
             }
