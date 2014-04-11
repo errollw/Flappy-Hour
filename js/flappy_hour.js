@@ -66,16 +66,16 @@ window.onload = function() {
     // flap beer on click or tap
     var tool = new Tool();
     tool.onMouseUp = function(event) {
-        if (!alive) return;
-        bm_dy = -12;
-        beer_mug.rotation = -25;
+        if (!alive) {
+            reset();
+        } else {
+            bm_dy = -12;
+            beer_mug.rotation = -25;
+        }
     }
 
     // mirror mouse action with keyboard
-    $("body").keyup(function(evt) {
-        tool.onMouseUp();
-        if (!alive && evt.keyCode == 82) reset();
-    });
+    $("body").keyup(tool.onMouseUp);
 
     view.onFrame = function(event) {
 
@@ -107,7 +107,7 @@ window.onload = function() {
 
             beer_mug.rotate(-4);
 
-            $("#debrief").html("Game Over! Score: " + score + " Press 'R' to reset");
+            $("#debrief").html("Game Over! Score: " + score + " Press any key to reset");
         }
 
         bm_dy += 0.7;
