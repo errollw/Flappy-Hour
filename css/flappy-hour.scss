@@ -1,21 +1,26 @@
+p {
+  font-family: "Conv_04B_19__",Sans-Serif;
+  color: white;
+  margin: 0;
+}
+
 #score {
   position: absolute;
   top: 48px;
   left: 48px;
-  margin: 0;
+  
 
-  font-family: "Conv_04B_19__",Sans-Serif;
+  
   font-size: 42px;
-  color: white;
   text-shadow: 2px 2px 0 #000, -2px 2px 0 #000, 2px -2px 0 #000, -2px -2px 0 #000,
                0 4px 0 #000, 4px 0 0 #000, 4px 4px 0 #000;
 
 }
 
-#instructions {
+#instructions, #debrief {
   font-family: "Conv_04B_19__",Sans-Serif;
   font-size: 28px;
-  color: white;
+  
   text-shadow: 2px 2px 0 #000, -2px 2px 0 #000, 2px -2px 0 #000, -2px -2px 0 #000,
                0 4px 0 #000, 4px 0 0 #000, 4px 4px 0 #000;
 

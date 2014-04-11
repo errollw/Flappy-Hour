@@ -70,11 +70,22 @@ window.onload = function() {
         beer_mug.rotation = -25;
     }
 
+    $("body").keyup(function(evt) {
+        tool.onMouseUp();
+        if (!alive && evt.keyCode == 82) reset();
+    });
+
     view.onFrame = function(event) {
 
-        $("#score").text(score);
+        // set text and logo visibility
+        $('#logo').toggle(alive && score == 0 || !alive);
+        $('#debrief').toggle(!alive);
+        $('#instructions').toggle(alive && score == 0);
+        $("#score").toggle(alive && score > 0);
 
         if (alive) {
+
+            $("#score").text(score);
 
             //spawn more kegs
             keg_set_timer--;
@@ -91,8 +102,10 @@ window.onload = function() {
             beer_mug.rotation = bm_dy
 
         } else {
+
             beer_mug.rotate(-4);
-            $("#score").text("Game Over!");
+
+            $("#debrief").html("Game Over! Score: " + score + " Press 'R' to reset");
         }
 
         bm_dy += 0.7;
@@ -129,8 +142,15 @@ window.onload = function() {
     }
 }
 
-function restart(){
+function reset(){
+    alive = true;
+    score = 0;
+    bm_dy = -12;
+    beer_mug.position.y = ground_y/2 - beer_mug.bounds.height;
+    beer_mug.position.x = vw/3 - beer_mug.bounds.width/2;
 
+    for(i=keg_sets.length-1; i>=0; i--) keg_sets[i].remove();
+    keg_sets = [];
 }
 
 function make_keg_set(){
@@ -153,7 +173,7 @@ function make_keg_set(){
     keg_sets.push(keg_set);
     keg_set.insertBelow(bg_ground);
 
-    gap_y += Math.ceil(Math.random()*400-200);
+    gap_y += Math.ceil(Math.random()*600-300);
     gap_y = gap_y.clamp(gap_y_min, gap_y_max);
 }
 
