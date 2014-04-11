@@ -91,7 +91,7 @@ window.onload = function() {
     }
 
     // mirror mouse action with keyboard
-    $("body").keyup(tool.onMouseUp);
+    $("body").keydown(tool.onMouseUp);
 
     view.onFrame = function(event) {
 
