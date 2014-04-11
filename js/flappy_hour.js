@@ -72,7 +72,9 @@ window.onload = function() {
     var tool = new Tool();
     tool.onMouseUp = function(event) {
         if (!alive) {
-            reset();
+            if (beer_mug.position.y > ground_y) {
+                reset();
+            }
         } else {
             bm_dy = -12;
             beer_mug.rotation = -25;
