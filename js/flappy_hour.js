@@ -103,7 +103,7 @@ window.onload = function() {
                 keg_set_timer = keg_set_timer_max;
             }
 
-            if (beer_mug.position.y + 40 > ground_y){
+            if (beer_mug.position.y + 40 > ground_y || beer_mug.position.y - 40 < 0){
                 bm_dy = -15;
                 alive = false;
             }
