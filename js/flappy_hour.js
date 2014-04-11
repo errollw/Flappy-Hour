@@ -63,6 +63,7 @@ window.onload = function() {
 
     make_keg_set();
 
+    // flap beer on click or tap
     var tool = new Tool();
     tool.onMouseUp = function(event) {
         if (!alive) return;
@@ -70,6 +71,7 @@ window.onload = function() {
         beer_mug.rotation = -25;
     }
 
+    // mirror mouse action with keyboard
     $("body").keyup(function(evt) {
         tool.onMouseUp();
         if (!alive && evt.keyCode == 82) reset();
