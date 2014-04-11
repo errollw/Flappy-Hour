@@ -29,6 +29,8 @@ var gap_height = 240;
 
 var score = 0;
 
+var alive = true;
+
 // Only executed our code once the DOM is ready.
 window.onload = function() {
 
@@ -63,6 +65,7 @@ window.onload = function() {
 
     var tool = new Tool();
     tool.onMouseUp = function(event) {
+        if (!alive) return;
         bm_dy = -12;
         beer_mug.rotation = -25;
     }
@@ -71,20 +74,32 @@ window.onload = function() {
 
         $("#score").text(score);
 
-        console.log(score)
+        if (alive) {
 
-        keg_set_timer--;
-        if (keg_set_timer == 0){
-            make_keg_set();
-            keg_set_timer = keg_set_timer_max;
+            //spawn more kegs
+            keg_set_timer--;
+            if (keg_set_timer == 0){
+                make_keg_set();
+                keg_set_timer = keg_set_timer_max;
+            }
+
+            if (beer_mug.position.y + 40 > ground_y){
+                bm_dy = -15;
+                alive = false;
+            }
+
+            beer_mug.rotation = bm_dy
+
+        } else {
+            beer_mug.rotate(-4);
+            $("#score").text("Game Over!");
         }
 
         bm_dy += 0.7;
         beer_mug.position.y += bm_dy;
-        beer_mug.position.y = Math.min(vh,beer_mug.position.y)
-        
-        beer_mug.rotation = bm_dy
-
+        beer_mug.position.y = Math.min(vh+100,beer_mug.position.y)
+            
+        // scroll background graphics
         for(i=0; i<bg_instances.length; i++){
             bg_instances[i].position.x += bg_instances[i].dx;
             if(bg_instances[i].bounds.left < bg_instances[i].thresh_x){
@@ -95,16 +110,27 @@ window.onload = function() {
         for(i=keg_sets.length-1; i>=0; i--){
             keg_sets[i].position.x += keg_sets[i].dx;
 
-            if (keg_sets[i].position.x <= vw/3 && (keg_sets[i].position.x-keg_sets[i].dx) > vw/3)
+            // increment score as kegs pass beer
+            if (alive && keg_sets[i].position.x <= vw/3 && (keg_sets[i].position.x-keg_sets[i].dx) > vw/3)
                 score++;
 
-            if(keg_sets[i].position.x < -keg_w/2){
+            // 
+            if (alive && keg_sets[i].hitTest(beer_mug.position, {tolerance: 60})){
+                bm_dy = -15;
+                alive = false;
+            }
+
+            // remove keg sets past end of screen
+            if (keg_sets[i].position.x < -keg_w/2){
                 keg_sets[i].remove();
                 keg_sets.shift();
             }
         }
     }
-    
+}
+
+function restart(){
+
 }
 
 function make_keg_set(){
