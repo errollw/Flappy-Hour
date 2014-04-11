@@ -103,8 +103,12 @@ window.onload = function() {
                 keg_set_timer = keg_set_timer_max;
             }
 
-            if (beer_mug.position.y + 40 > ground_y || beer_mug.position.y - 40 < 0){
+            if (beer_mug.position.y + 40 > ground_y){
                 bm_dy = -15;
+                alive = false;
+            }
+            if (beer_mug.position.y - 30 < 0){
+                bm_dy = 0;
                 alive = false;
             }
 
@@ -127,6 +131,9 @@ window.onload = function() {
         bm_dy += 0.7;
         beer_mug.position.y += bm_dy;
         beer_mug.position.y = Math.min(vh+100,beer_mug.position.y)
+        if (beer_mug.position.y - 30 < 0){
+            bm_dy = 0;
+        }
             
         // scroll background graphics
         for(i=0; i<bg_instances.length; i++){
@@ -164,7 +171,7 @@ function reset(){
 
     alive = true;
     score = 0;
-    bm_dy = -12;
+    bm_dy = -4;
     beer_mug.position.y = ground_y/2 - beer_mug.bounds.height;
     beer_mug.position.x = vw/3 - beer_mug.bounds.width/2;
 
